@@ -1,0 +1,6 @@
+{
+  "my_project_id": "fluent-timing-test",
+  "my_source_image_family": "ubuntu-1604-lts",
+  "my_machine_type": "f1-micro",
+  "my_firewall_rule": "puma-server"
+}
