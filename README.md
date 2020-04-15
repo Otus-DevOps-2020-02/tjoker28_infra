@@ -34,3 +34,25 @@ gcloud compute instances create reddit-app\
 
 Команда для создания правила FW
 gcloud compute firewall-rules create default-puma-server --allow=tcp:9292 --source-ranges=0.0.0.0/0 --target-tags=puma-server
+
+ДЗ5
+ Работа с Packer
+
+Создан файл ubuntu16.json который создает образ в GCP согласно заданным параметрам в файле variables.json
+
+Созданы и перенесены в директорию ./packer/scripts/ скрипты для установки MongoDB, Ruby и нашего сервиса
+В файле ./packer/files/pumaapp.service параметры для system unit
+
+[Unit]
+Description=PumaApp
+After=network.target
+After=mongod.service
+[Service]
+Type=simple
+WorkingDirectory=/home/tjoker/reddit/
+ExecStart=/usr/local/bin/pumactl start
+[Install]
+WantedBy=multi-user.target
+
+Доп задание: создан immutable.json для создания готового образа с установленными зависимостями с помощью предыдущих скриптов. Он собирает образ reddit-full.
+Так же создан скрипт create-redditvm.sh для создания новой VM на основе образа reddit-full
