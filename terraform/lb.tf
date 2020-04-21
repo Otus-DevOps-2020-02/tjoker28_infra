@@ -4,9 +4,13 @@
 #}
 #Ресурс создания группы инстансов
 resource "google_compute_instance_group" "puma-app" {
-  name = "puma-app-group"
- instances = [google_compute_instance.app[0].self_link, google_compute_instance.app[1].self_link ]
- zone = var.zone
+  name      = "puma-app-group"
+  instances = [google_compute_instance.app[0].self_link, google_compute_instance.app[1].self_link]
+  zone      = var.zone
+  named_port {
+    name = "http"
+    port = "9292"
+  }
 }
 
 #Проверка состояния
@@ -21,10 +25,11 @@ resource "google_compute_http_health_check" "default" {
 resource "google_compute_backend_service" "puma-app-backend" {
   name          = "puma-app-backend"
   health_checks = [google_compute_http_health_check.default.self_link]
+  #backend {group = google_compute_instance_group.puma-app-group}
 }
 # создаем балансировщик нагрузки
 resource "google_compute_url_map" "urlmap" {
-  name        = "urlmap"
+  name            = "urlmap"
   default_service = google_compute_backend_service.puma-app-backend.self_link
 }
 
