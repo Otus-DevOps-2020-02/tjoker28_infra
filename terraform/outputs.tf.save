@@ -1,0 +1,7 @@
+ace.0.access_config.0.nat_ip}"
+}
+output "compute_instance_external_ip_addresses" {
+    description = "If the instance has an access config, either the given external ip (in the nat_ip field) or the ephemeral
+(generated) ip (if you didn't provide one)."
+    value = "${google_compute_instance.compute_instance.*.network_interface.0.access_config.0.assigned_nat_ip}"
+}
