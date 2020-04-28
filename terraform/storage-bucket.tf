@@ -7,7 +7,7 @@ module "storage-bucket" {
   source  = "SweetOps/storage-bucket/google"
   version = "0.3.1"
   # Имена поменяйте на другие
-  name = ["my-homework7-bucket-test"]
+  name = "my-homework7-bucket"
 }
 output storage-bucket_url {
   value = module.storage-bucket.url

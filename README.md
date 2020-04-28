@@ -71,7 +71,8 @@ WantedBy=multi-user.target
 
 
 # ДЗ7
-1) Создать новое хранилище:
+1) Создать новое хранилище с помощью подключаемого модуля storage-bucket: ```https://registry.terraform.io/modules/SweetOps/storage-bucket/google/0.3.1 ```
+Или же руками через консоль:
 ``` gsutil mb gs://[BUCKET_NAME]/ ```
 просмотр хранилищь ``` gsutil ls ```
 
