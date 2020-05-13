@@ -19,7 +19,9 @@ resource "google_compute_project_metadata_item" "ssh-keys2" {
   key   = "ssh-keys"
   value = "appuser2:${file(var.public_key_path)}"
 }
-
+resource "google_compute_address" "app_ip" {
+name = "reddit-app-ip"
+}
 #Ресурс для создания инстанса VM в GCP
 resource "google_compute_instance" "app" {
   count        = var.count_instances
@@ -34,7 +36,9 @@ resource "google_compute_instance" "app" {
   }
   network_interface {
     network = "default"
-    access_config {}
+    access_config {
+      nat_ip = google_compute_address.app_ip.address
+    }
   }
   connection {
     type  = "ssh"
@@ -68,9 +72,23 @@ resource "google_compute_firewall" "firewall_puma" {
   allow {
     protocol = "tcp"
     ports    = ["9292"]
-  }
+   }
   # Каким адресам разрешаем доступ
   source_ranges = ["0.0.0.0/0"]
   # Правило применимо для инстансов с перечисленными тэгами
   target_tags = ["reddit-app"]
+}
+#Ресурс для создания правила FireWall открытие 22 порта для ssh
+resource "google_compute_firewall" "firewall_ssh" {
+  name = "default-allow-ssh"
+  description = "Allow SSH from anywhere"
+  # Название сети, в которой действует правило
+  network = "default"
+  # Какой доступ разрешить
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  # Каким адресам разрешаем доступ
+  source_ranges = ["0.0.0.0/0"]
 }
