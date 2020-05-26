@@ -89,3 +89,38 @@ terraform {
 Работа с Ansible
 Сделан скрипт(script.py) на python, который берет список всех хостов GCP и выводит их в формате JSON.
 Скрипт добавлен в качестве источника объектов(inventory) в конфигурационный файл ansible.cfg
+
+# ДЗ9
+Попробовано создание инфраструктуры с помощью плейбуков (один файл нужно задавать группы хостов к которым будет применяться этот файл через --limit и через теги --tags задания)
+```
+ansible-playbook reddit_app.yml --check --limit app --tags app-tag
+#--check -флаг тестовой прогонки
+```
+Попробован варинат: в одном плейбуке лежит несколько сценариев (указывать нужно только теги, а нужные группы уже заложены в сценариях)
+```
+ansible-playbook reddit_app.yml --tags app-tag
+```
+Попробован вариант с несколькими плейбуками (один плейбук на задачу или группу хостов). Все плэйбуки запускаются из основного с помощью модуля import_playbook.
+
+переписал скрипт для создания динамического инвентори (теперь на выходе json c разбивкой по группам)
+
+Вместо shell скриптов в packer теперь используется ansible для устанловки пакетов
+документация по модулям: https://docs.ansible.com/ansible/latest/modules/list_of_all_modules.html
+документация по циклам: https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html
+
+Важно использовать правильный формат описания цикла для установки пакетов:
+```
+- name: Install ruby & bundle
+          apt: "name:{{ item }} state:present"
+          with_items:
+            - ruby-full
+            - ruby-bundler
+            - build-essential
+```
+На вариант с apt: pkg={{ item }}  ansible ругается
+
+ Пути в JSON-файлах корректны, билд образов нужно производить из корня репозитория
+ ```
+ packer build -var-file=packer/variables.json  packer/app.json
+ ```
+ Для WSL может понадобиться задать еще пользователя "user": "appuser"
