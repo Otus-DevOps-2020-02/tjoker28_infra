@@ -124,3 +124,19 @@ ansible-playbook reddit_app.yml --tags app-tag
  packer build -var-file=packer/variables.json  packer/app.json
  ```
  Для WSL может понадобиться задать еще пользователя "user": "appuser"
+
+# ДЗ10
+
+Созданы роли для app и db
+Созданы в ansible два окружения stage и prod
+В group_vars расположены переменные для определенного окружения
+Добавлена в проект роль из ansible-galaxy jdauphant.nginx, ее переменные описаны в файле переменных app для каждого окружения
+Обновлен общий playbook site.yml запуска всех ролей.
+Для запуска из определенного окружения используется команда:
+```
+ansible-playbook -i environments/prod/d_inventory.py playbooks/users.yml
+```
+
+ansible vault. Зашифровали файл содержащий в явном виде логин-пароль.
+Добавил в проект динамическое инвентори(скрипт из предыдущих ДЗ)
+Поправлен playbook packer_app.yml В первоначальной версии не устанавливались все элементы, хотя никакой ошибки не выдавало.
