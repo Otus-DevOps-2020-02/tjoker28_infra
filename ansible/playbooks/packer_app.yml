@@ -4,7 +4,7 @@
       become: true
       tasks:
         - name: Install ruby & bundle
-          apt: "name:{{ item }} state:present"
+          apt: "name={{ item }} state=present"
           with_items:
             - ruby-full
             - ruby-bundler
