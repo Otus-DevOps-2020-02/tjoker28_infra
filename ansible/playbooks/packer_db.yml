@@ -5,7 +5,7 @@
       tasks:
         - name: Add repo key
           apt_key:
-            id: 0xd68fa50fea312927
+            id: EA312927
             keyserver: keyserver.ubuntu.com
 
         - name: Add repo
@@ -18,9 +18,9 @@
           apt:
             name: mongodb-org
             state: present
-
+            allow_unauthenticated: yes
         - name: Start service & enable
           systemd:
-            name: mongodb-org
+            name: mongod
             enabled: yes
             state: started
