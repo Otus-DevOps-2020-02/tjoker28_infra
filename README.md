@@ -140,3 +140,16 @@ ansible-playbook -i environments/prod/d_inventory.py playbooks/users.yml
 ansible vault. Зашифровали файл содержащий в явном виде логин-пароль.
 Добавил в проект динамическое инвентори(скрипт из предыдущих ДЗ)
 Поправлен playbook packer_app.yml В первоначальной версии не устанавливались все элементы, хотя никакой ошибки не выдавало.
+
+# ДЗ11
+
+Знакомство с Vagrant и Molecule:
+В vagrant создание локального окружения
+Провижиненинг в vagrant с помощью ansible. Инвентори генерится vagrant
+```
+cat .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+```
+Разделены задачи в ролях по отдельным файлам. Добавлен параметр пользователя(вынесен в дефолты ролей)
+Для локального тестирования Ansible ролей будем использован Molecule для создания машин и проверки конфигурации и Testinfra для написания тестов.
+virtualenv и virtualenvwrapper
+Задачи со * отложены, когда будет время.
